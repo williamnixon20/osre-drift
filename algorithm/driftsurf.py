@@ -56,10 +56,13 @@ class DriftSurf(Algorithm):
             if self.models[key] is None:
                 self.initialize_model(key)
 
+            X_train_global, y_train_global = [], []
             for iter_id in self.train_data_dict[key]:
                 X_train, y_train = self.data_df_dict[iter_id]
-                self.models[key].fit(X_train, y_train)
+                X_train_global.extend(X_train)
+                y_train_global.extend(y_train)
                 num_train += len(X_train)
+            self.models[key].fit(X_train_global, y_train_global)
         return num_train
 
     def set_key_df(self, iter_id, data_df_dict):
